@@ -1,0 +1,54 @@
+[ info ]  running tests...
+{"level":30,"time":1699603980308,"pid":22668,"hostname":"AlanG","name":"counter-venny-service","msg":"started server on 0.0.0.0:55073"}
+
+functional / Auth module (tests\functional\auth_module.spec.ts)
+  √ login test (238ms)
+  √ auth profile test (22ms)
+  √ auth profile update not password test (16ms)
+  √ auth profile update with password test (51ms)
+  √ auth logout test (13ms)
+
+functional / Role module (tests\functional\permission_module.spec.ts)
+  √ permissions list test (19ms)
+  √ permissions store test (21ms)
+  √ permissions store validation test (15ms)
+  √ permissions show test (13ms)
+  √ permissions edit test (13ms)
+  √ permissions update test (18ms)
+  √ permissions update validation test (15ms)
+  √ permissions delete test (17ms)
+
+functional / Role module (tests\functional\role-permission_module.spec.ts)
+  √ role-permissions list test (103ms)
+  √ role-permissions store test (13ms)
+  √ role-permissions store validation test (11ms)
+  √ role-permissions show test (11ms)
+  √ role-permissions edit test (11ms)
+  √ role-permissions update test (17ms)
+  √ role-permissions update validation test (13ms)
+  √ role-permissions delete test (15ms)
+
+functional / Role module (tests\functional\role_module.spec.ts)
+  √ roles list test (16ms)
+  √ roles store test (15ms)
+  √ roles store validation test (13ms)
+  √ roles show test (11ms)
+  √ roles edit test (11ms)
+  √ roles update test (13ms)
+  √ roles update validation test (13ms)
+  √ roles delete test (15ms)
+
+functional / User module (tests\functional\user_module.spec.ts)
+  √ users list test (18ms)
+  √ users store test (46ms)
+  √ users store validation test (11ms)
+  √ users show test (12ms)
+  √ users edit test (13ms)
+  √ users update test (50ms)
+  √ users update validation test (16ms)
+  √ users delete test (15ms)
+
+ PASSED 
+
+Tests   : 37 passed (37)
+Time    : 996ms

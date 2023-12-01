@@ -1,0 +1,60 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import FormPermintaanRepository from 'App/Repositories/FormPermintaanRepository';
+import FormPermintaanValidator from 'App/Validators/FormPermintaanValidator';
+
+export default class FormReqGasController {
+  private repository: any;
+  constructor() {
+    this.repository = new FormPermintaanRepository();
+  }
+  public async index({ bouncer, response, request }: HttpContextContract) {
+    await bouncer.authorize("read-form-permintaan")
+    if (await bouncer.allows('read-form-permintaan')) {
+      const q = await this.repository.paginateData(request.all())
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
+  }
+
+  public async store({ request, response }: HttpContextContract) {
+    const payload = await request.validate(FormPermintaanValidator)
+    const q = await this.repository.storeForm(payload)
+    return response.status(q.statCode).send(q.res)
+  }
+
+  public async show({ bouncer, response, request }: HttpContextContract) {
+    await bouncer.authorize("read-form-permintaan")
+    if (await bouncer.allows('read-form-permintaan')) {
+      const q = await this.repository.findForm(request.param('id'))
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
+  }
+
+  public async update({ bouncer, request, response }: HttpContextContract) {
+    if (request.input('status')) {
+      const q = await this.repository.setStatus(request.input('status'), request.param('id'))
+      return response.status(q.statCode).send(q.res)
+    }
+    await bouncer.authorize("read-form-permintaan")
+    if (await bouncer.allows('read-form-permintaan')) {
+      const q = await this.repository.updateForm(request.param('id'), request.all())
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
+  }
+
+  public async destroy({ bouncer, response, request }: HttpContextContract) {
+    await bouncer.authorize("delete-form-permintaan")
+    if (await bouncer.allows('delete-form-permintaan')) {
+      const q = await this.repository.delete(request.param('id'))
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
+  }
+
+  public async ValidatePin({ response, request }: HttpContextContract) {
+    const q = await this.repository.validatePin(request.all())
+    return response.status(q.statCode).send(q.res)
+  }
+}
