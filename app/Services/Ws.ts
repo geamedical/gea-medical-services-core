@@ -17,7 +17,7 @@ class Ws {
         this.booted = true
         this.io = new Server(AdonisServer.instance, {
             cors: {
-                origin: `http://${Env.get('HOST_FRONTEND')}:${Env.get('PORT_FRONTEND')}`,
+                origin: `http://${Env.get('HOST_FRONTEND')}${Env.get('PORT_FRONTEND') !== '' ? ':' + Env.get('PORT_FRONTEND') : ''}`,
                 credentials: true,
             },
             allowEIO3: true
