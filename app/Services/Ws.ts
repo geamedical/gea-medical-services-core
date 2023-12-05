@@ -5,19 +5,21 @@ import Env from '@ioc:Adonis/Core/Env'
 class Ws {
     public io: Server
     private booted = false
+    private frontend:string;
 
     public boot() {
-        /**
-         * Ignore multiple calls to the boot method
-         */
         if (this.booted) {
             return
         }
-
+        if (Env.get('PORT_FRONTEND') === '') {
+            this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}`
+        } else {
+            this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}:${Env.get('PORT_FRONTEND')}`
+        }
         this.booted = true
         this.io = new Server(AdonisServer.instance, {
             cors: {
-                origin: `http://${Env.get('HOST_FRONTEND')}${Env.get('PORT_FRONTEND') !== '' ? ':' + Env.get('PORT_FRONTEND') : ''}`,
+                origin: this.frontend,
                 credentials: true,
             },
             allowEIO3: true
