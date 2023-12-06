@@ -96,22 +96,30 @@ export default class DocumentationRepository extends BaseRepository {
                 doc1.desc = req.desc
                 doc1.useTransaction(trx)
                 await doc1.save()
-                // update document list
+
+                // delete related data::start
+                await DocumentationListStep.query().where('documentation_id', id).delete()
+                await DocumentationMap.query().where('documentation_id', id).delete()
+                await DocumentationChart.query().where('documentation_id', id).delete()
+                await DocumentationFlow.query().where('documentation_id', id).delete()
+                // delete related data::end
+
+                // create document list
                 await doc1
                     .related('listep')
-                    .updateOrCreateMany(req.listep, 'title')
-                // update document roudmap
+                    .createMany(req.listep)
+                // create document roudmap
                 await doc1
                     .related('map')
-                    .updateOrCreateMany(req.mapstep, 'text')
-                // update document chart
+                    .createMany(req.mapstep)
+                // create document chart
                 await doc1
                     .related('chart')
-                    .updateOrCreateMany(req.flowchart.chart, 'name')
-                // update document flow
+                    .createMany(req.flowchart.chart)
+                // create document flow
                 await doc1
                     .related('flow')
-                    .updateOrCreateMany(
+                    .createMany(
                         req.flowchart.flow.map((fl: { source: { id: string; position: string; }; destination: { id: string; position: string; }; type: string; style: any; markerEnd: string; }) => ({
                             documentation_id: doc1.id,
                             source: JSON.stringify({ id: fl.source.id, position: fl.source.position }),
@@ -119,7 +127,7 @@ export default class DocumentationRepository extends BaseRepository {
                             type: fl.type,
                             style: JSON.stringify(fl.style),
                             markerd: fl.markerEnd,
-                        })), 'source')
+                        })))
             })
         } catch (error) {
             return responseErrors(error)
