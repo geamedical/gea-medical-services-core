@@ -15,14 +15,16 @@ export default class FormPermintaanRepository extends BaseRepository {
             const count = await Database
                 .from('form_req_gas')
                 .count('* as total')
-            const q = await FormReqGa.query().where(async (query) => {
+            const q = await Database.query()
+            .from('Form_Permintaan_Akses_View').where(async (query) => {
                 query
                     .where('type', 'LIKE', '%' + search + '%')
                     .orWhere('detail', 'LIKE', '%' + search + '%')
                     .orWhere('notes', 'LIKE', '%' + search + '%')
+                    .orWhere('name', 'LIKE', '%' + search + '%')
+                    .orWhere('nik', 'LIKE', '%' + search + '%')
             })
                 .orderBy([{ column: sortBy !== '' ? sortBy : 'created_at', order: sortDesc ? 'desc' : 'asc' }])
-                .preload('user')
                 .paginate(page, limit < 5 ? count[0].total : limit)
             return response(200, q)
         } catch (error) {
@@ -31,14 +33,20 @@ export default class FormPermintaanRepository extends BaseRepository {
     }
     async storeForm(req: any) {
         try {
-            const u_data = {
-                name: req.user.name,
-                password: 'Gea-emp123!!',
-                role_id: req.user.role_id,
-                dept_id: req.user.dept_id,
-                telp: req.user.telp,
+            const data = {}
+            const find_u = await User.query().where((query)=>{
+                query
+                .where('name', req.user.name)
+                .andWhere('telp', req.user.telp)
+            }).first()
+            data['name']= req.user.name
+            if(find_u === null){
+                data['password']= 'Gea-emp123!!'
             }
-            const u = await User.updateOrCreate(req.user, u_data)
+            data['role_id']= req.user.role_id
+            data['dept_id']= req.user.dept_id
+            data['telp']= req.user.telp
+            const u = await User.updateOrCreate(req.user, data)
             if (u) {
                 await u.related('formPermintaan').createMany(req.request)
             }

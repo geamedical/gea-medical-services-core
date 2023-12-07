@@ -112,9 +112,11 @@ export function sendWA(msg: string, phone: string) {
     let $headers = {
         "Content-Type": "application/json",
     }
-    return axios.post(Env.get('WA_URL_API'), $sendWA, {
-        headers: $headers
-    })
+    setTimeout(() => {
+        return axios.post(Env.get('WA_URL_API'), $sendWA, {
+            headers: $headers
+        })
+    }, 10000);
 }
 
 export async function FindUserAuthLocalDb(username: string, password: string) {
