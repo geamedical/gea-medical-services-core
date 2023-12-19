@@ -3,7 +3,7 @@ import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Role from './Role'
 import Dept from './Dept'
-import FormReqGa from './FormReqGa'
+import FormPermintaanAkses from './FormPermintaanAkses'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -68,8 +68,8 @@ export default class User extends BaseModel {
   })
   public dept: BelongsTo<typeof Dept>
 
-  @hasMany(() => FormReqGa, {
+  @hasMany(() => FormPermintaanAkses, {
     foreignKey: 'user_id',
   })
-  public formPermintaan: HasMany<typeof FormReqGa>
+  public formPermintaan: HasMany<typeof FormPermintaanAkses>
 }

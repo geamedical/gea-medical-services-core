@@ -28,13 +28,15 @@ export default class PermissionRepository extends BaseRepository {
     }
     async storePermission(data: any) {
         try {
+            const p1 = new GroupPermission()
+            p1.name = data.name.toLowerCase()
+            await p1.save()
+            const datacreate: any[] = []
             for (let i = 0; i < data.permission.length; i++) {
                 const txt = data.permission[i] + '-' + data.name
-                const p1 = new GroupPermission()
-                p1.name = data.name.toLowerCase()
-                await p1.save()
-                await p1.related('child').create({ name: txt.toLowerCase() })
+                datacreate.push({ name: txt.toLowerCase() })
             }
+            await p1.related('child').createMany(datacreate)
             return response(200, data)
         } catch (error) {
             return responseErrors(error)
@@ -42,10 +44,20 @@ export default class PermissionRepository extends BaseRepository {
     }
     async updatePermission(id: number, data: any) {
         try {
-            const q = await Permission.find(id)
+            const q = await Permission.findOrFail(id)
             if (q) {
-                q.name = data.permission + '-' + data.name
-                await q.save()
+                const del = await Permission.query().where('group_permission_id', q.group_permission_id).delete()
+                if (del) {
+                    const p1 = new GroupPermission()
+                    p1.name = data.name.toLowerCase()
+                    await p1.save()
+                    const datacreate: any[] = []
+                    for (let i = 0; i < data.permission.length; i++) {
+                        const txt = data.permission[i] + '-' + data.name
+                        datacreate.push({ name: txt.toLowerCase() })
+                    }
+                    await p1.related('child').createMany(datacreate)
+                }
             }
             return response(200, data)
         } catch (error) {

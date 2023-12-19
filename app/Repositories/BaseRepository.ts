@@ -72,9 +72,6 @@ export default class BaseRepository {
     async delete(id: number) {
         try {
             const q = await this.model.find(id);
-            if (!q) {
-                return { status: false, data: 'undefined data!', msg: 'destroy error' }
-            }
             await q.delete();
             return response(200, q)
         } catch (error) {

@@ -1,28 +1,31 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import NotificationRepository from 'App/Repositories/NotificationRepository';
+import Database from '@ioc:Adonis/Lucid/Database'
+import NotificationView from 'App/Models/NotificationView'
 
 export default class NotificationsController {
-  private notifRepository: any;
-  constructor() {
-    this.notifRepository = new NotificationRepository();
-  }
   public async index({ request, response, auth }: HttpContextContract) {
-    const q = await this.notifRepository
-      .notifPaginate(request.all(), auth.user!.id)
-    return response.status(q.statCode).send(q.res)
+    const q = await NotificationView.query()
+      .where((query) => {
+        query
+          .where('status', 'n')
+          .orWhere('status', 'w')
+          .orWhere('status', 'waiting')
+      })
+      .andWhere('to', auth.user!.id)
+      .preload('from_user')
+      .preload('to_user')
+      .paginate(request.input('page', 1), request.input('limit', 10))
+
+    const count = await Database
+      .from('notification')
+      .where((query) => {
+        query
+          .where('status', 'n')
+          .orWhere('status', 'w')
+          .orWhere('status', 'waiting')
+      })
+      .andWhere('to', auth.user!.id)
+      .count('* as total')
+    return response.status(200).send({ pagination: q, count: count[0].total })
   }
-
-  public async create({ }: HttpContextContract) { }
-
-  public async store({ }: HttpContextContract) { }
-
-  public async show({ request, response }: HttpContextContract) {
-    const q = await this.notifRepository
-      .notifSetView(request.param('id'))
-    return response.status(q.statCode).send(q.res)
-  }
-
-  public async update({ }: HttpContextContract) { }
-
-  public async destroy({ }: HttpContextContract) { }
 }

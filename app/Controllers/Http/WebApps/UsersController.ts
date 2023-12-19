@@ -10,7 +10,7 @@ export default class UsersController {
     }
 
     public async index({ bouncer, response, request }: HttpContextContract) {
-        await bouncer.authorize("read-user")
+        // await bouncer.authorize("read-user")
         if (await bouncer.allows('read-user')) {
             const q = await this.repository.getUsersPaginate(request.all())
             return response.status(q.statCode).send(q.res)

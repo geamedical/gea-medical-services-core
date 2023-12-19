@@ -1,17 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'notifications'
+  protected tableName = 'nas_dir_permissions'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('user_notif_target').nullable()
-      table.enum('type', ['login','logout','form-permintaan','lainya']).defaultTo('lainya')
-      table.text('data_encode', 'longtext').nullable()
-      table.enum('view', ['y', 'n']).defaultTo('n')
-      table.string('icon')
-      table.string('color')
+      table.integer('primary_authorization_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.integer('secondary_authorization_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.string('dirname')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

@@ -7,13 +7,6 @@ export class LoginValidator extends Messages{
     super()
   }
   public schema = schema.create({
-    // email: schema.string([
-    //   rules.email(),
-    //   rules.normalizeEmail({
-    //     allLowercase: true,
-    //     gmailRemoveSubaddress: true,
-    //   })
-    // ]),
     username: schema.string(),
     password: schema.string([
       rules.minLength(4),

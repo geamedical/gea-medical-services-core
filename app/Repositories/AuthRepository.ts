@@ -6,6 +6,7 @@ import Role from "App/Models/Role";
 import Dept from "App/Models/Dept";
 import axios from "axios";
 import Env from '@ioc:Adonis/Core/Env'
+import { DateTime } from "luxon";
 
 export default class AuthRepository extends BaseRepository {
     constructor() {
@@ -17,7 +18,7 @@ export default class AuthRepository extends BaseRepository {
             password: ''
         }
         try {
-            await axios.post(`${Env.get('GEA_API_ERP')}/api`, ParamsGeaApiServices(), HeaderGeaApiServices())
+            await axios.post(`${Env.get('GEA_API_ERP')}/api/hr`, ParamsGeaApiServices(), HeaderGeaApiServices())
                 .then(async (res) => {
                     await axios.post(`${Env.get('GEA_API_ERP')}/emp`,
                         ParamsGeaApiServicesLogin(credential.username, credential.password),
@@ -48,8 +49,8 @@ export default class AuthRepository extends BaseRepository {
                                     marital: dataUser.marital,
                                     npwp: dataUser.npwp,
                                     noktp: dataUser.noktp,
-                                    address: dataUser.address,
-                                    telp: dataUser.telp,
+                                    address: dataUser.emp_add,
+                                    telp: dataUser.tel,
                                     password: credential.password,
                                     activation: 'valid',
                                     islogin: 'y'
@@ -137,6 +138,31 @@ export default class AuthRepository extends BaseRepository {
                 "activation": fetch.activation,
             }
             return response(200, { user: q, permission })
+        } catch (error) {
+            return responseErrors(error)
+        }
+    }
+
+    async updateProfile(id: number, payload: { role_id: number; dept_id: number; name: string; nik: string; email: string; username: string; birthdate: DateTime; gender: string; marital: string; npwp: string; noktp: string; address: string; telp: string; activation: boolean; }) {
+        try {
+            console.log(id, payload);
+            const q = await User.findOrFail(id)
+            q.role_id = payload.role_id
+            q.dept_id = payload.dept_id
+            q.name = payload.name
+            q.nik = payload.nik
+            q.email = payload.email
+            q.username = payload.username
+            q.birthdate = payload.birthdate
+            q.gender = payload.gender
+            q.marital = payload.marital
+            q.npwp = payload.npwp
+            q.noktp = payload.noktp
+            q.address = payload.address
+            q.telp = payload.telp
+            q.activation = payload.activation ? 'valid' : 'invalid'
+            await q.save()
+            return response(200, q)
         } catch (error) {
             return responseErrors(error)
         }

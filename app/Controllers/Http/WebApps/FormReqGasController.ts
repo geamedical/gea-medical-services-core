@@ -32,11 +32,11 @@ export default class FormReqGasController {
   }
 
   public async update({ bouncer, request, response }: HttpContextContract) {
-    if (request.input('status')) {
-      const q = await this.repository.setStatus(request.input('status'), request.param('id'))
+    const input = request.all()
+    if (input['status'] !== undefined && input['column'] !== undefined) {
+      const q = await this.repository.setStatus(request.all())
       return response.status(q.statCode).send(q.res)
     }
-    await bouncer.authorize("read-form-permintaan")
     if (await bouncer.allows('read-form-permintaan')) {
       const q = await this.repository.updateForm(request.param('id'), request.all())
       return response.status(q.statCode).send(q.res)
@@ -47,7 +47,7 @@ export default class FormReqGasController {
   public async destroy({ bouncer, response, request }: HttpContextContract) {
     await bouncer.authorize("delete-form-permintaan")
     if (await bouncer.allows('delete-form-permintaan')) {
-      const q = await this.repository.delete(request.param('id'))
+      const q = await this.repository.deleteall(request.param('id'))
       return response.status(q.statCode).send(q.res)
     }
     return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
@@ -55,6 +55,10 @@ export default class FormReqGasController {
 
   public async ValidatePin({ response, request }: HttpContextContract) {
     const q = await this.repository.validatePin(request.all())
+    return response.status(q.statCode).send(q.res)
+  }
+  public async formset({ response, auth }: HttpContextContract) {
+    const q = await this.repository.attrForm(auth.user!)
     return response.status(q.statCode).send(q.res)
   }
 }

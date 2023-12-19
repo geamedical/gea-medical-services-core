@@ -7,9 +7,9 @@ import { AuthValidatorUpdate, PasswordValidator } from 'App/Validators/UserValid
 import { DateTime } from 'luxon';
 
 export default class AuthController {
-    private authRepository: any;
+    private repository: any;
     constructor() {
-        this.authRepository = new AuthRepository();
+        this.repository = new AuthRepository();
     }
     /*
     |--------------------------------------------------------------------------
@@ -19,12 +19,11 @@ export default class AuthController {
     public async login({ request, auth, response }: HttpContextContract) {
         try {
             const payload = await request.validate(LoginValidator)
-            const q = await this.authRepository.validateLoginSync(payload)
+            const q = await this.repository.validateLoginSync(payload)
             let credential = q.res.data
             const token = await auth.use("api").attempt(credential.username, credential.password, {
                 expiresIn: "1 days",
             });
-            Event.emit('auth-login:user', auth.user!)
             return response.status(200).send({ status: true, data: token, msg: 'login success' })
         } catch (error) {
             const msg = error.code === 'E_INVALID_AUTH_PASSWORD' ? error.responseText : error.messages
@@ -37,7 +36,7 @@ export default class AuthController {
     |--------------------------------------------------------------------------
     */
     public async profile({ auth, response }: HttpContextContract) {
-        const q = await this.authRepository.profile(auth.user!.id)
+        const q = await this.repository.profile(auth.user!.id)
         return response.status(q.statCode).send(q.res)
     }
     /*
@@ -51,7 +50,7 @@ export default class AuthController {
             const paypass = await request.validate(PasswordValidator)
             payload['password'] = paypass.password
         }
-        const q = await this.authRepository.update(auth.user!.id, payload)
+        const q = await this.repository.updateProfile(auth.user!.id, payload)
         return response.status(q.statCode).send(q.res)
     }
     /*

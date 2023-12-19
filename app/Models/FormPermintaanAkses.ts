@@ -2,7 +2,8 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 
-export default class FormReqGa extends BaseModel {
+export default class FormPermintaanAkses extends BaseModel {
+  public static table = 'form_permintaan_akses'
   @column({ isPrimary: true })
   public id: number
   @column()
@@ -14,7 +15,17 @@ export default class FormReqGa extends BaseModel {
   @column()
   public notes: string
   @column()
-  public status: string
+  public accept_primary_id: number
+  @column()
+  public accept_secondary_id: number
+  @column()
+  public status_secondary: string
+  @column()
+  public status_primary: string
+  @column()
+  public status_feedback: string
+  @column()
+  public feedback_message: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

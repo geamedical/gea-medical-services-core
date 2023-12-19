@@ -20,18 +20,19 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import Application from '@ioc:Adonis/Core/Application'
+import { ReadDirectory } from 'App/helper';
 
 
-Route.get('/', () => {
-  return 'Hello world'
+Route.get('dir', async ({ request }) => {
+  return await ReadDirectory(request.input('directory'))
 })
 Route.group(() => {
   Route.get('images/:folder/:filename', async ({ params, response }) => {
-    const folder=params.folder.split("&")
+    const folder = params.folder.split("&")
     if (folder.length > 1) {
       const filePath = Application.tmpPath(`uploads/${folder[0]}/${folder[1]}/${params.filename}`)
       return response.attachment(filePath)
-    }else{
+    } else {
       const filePath = Application.tmpPath(`uploads/${folder[0]}/${params.filename}`)
       return response.attachment(filePath)
     }
@@ -51,6 +52,11 @@ Route.group(() => {
     Route.resource("role-permission", "WebApps/SetRolePermissionsController").apiOnly();
     Route.resource("form-permintaan", "WebApps/FormReqGasController").apiOnly();
     Route.post("form-permintaan/validate-pin", "WebApps/FormReqGasController.ValidatePin");
+    Route.post("form-permintaan/formset", "WebApps/FormReqGasController.formset");
     Route.resource("documentation", "WebApps/DocumentationsController").apiOnly();
+    Route.resource("server-permission", "WebApps/ServerPermissionsController").apiOnly();
+    Route.resource("nas-permission", "WebApps/NasDirPermissionsController").apiOnly();
+    Route.resource("permintaan-akses-server", "WebApps/Permintaan/AksesServersController").apiOnly();
+    Route.resource("permintaan-akses-folder-nas-server", "WebApps/Permintaan/AksesFolderNasServersController").apiOnly();
   }).middleware("auth:api").middleware('throttle:global');
 }).prefix("api");

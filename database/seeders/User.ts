@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 export default class UserSeeder extends BaseSeeder {
   public async run() {
     await UserFactory
-      .createMany(10)
+      .createMany(100)
     const role = await Role.query()
       .where((q) => {
         q.where('company', 'RMP')
