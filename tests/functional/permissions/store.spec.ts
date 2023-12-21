@@ -1,7 +1,7 @@
 import { test } from '@japa/runner'
 import User from 'App/Models/User'
 
-test.group('Permissions module', () => {
+export function store() {
     test('data store test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -25,7 +25,9 @@ test.group('Permissions module', () => {
             msg: 'success'
         })
     })
-    
+}
+
+export function store_validation() {
     test('data store validations test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -44,4 +46,4 @@ test.group('Permissions module', () => {
             errors: res.body().errors
         })
     })
-})
+}

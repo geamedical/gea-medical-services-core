@@ -7,6 +7,9 @@ export default class RoleValidator extends Messages{
     super()
   }
   public schema = schema.create({
-    rolename: schema.string()
+    company: schema.string(),
+    code: schema.string(),
+    rolename: schema.string(),
+    coderole: schema.string()
   })
 }

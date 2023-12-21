@@ -1,8 +1,8 @@
 import Database from '@ioc:Adonis/Lucid/Database';
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
-import GroupPermission from 'App/Models/GroupPermission'
-import Permission from 'App/Models/Permission';
-import RoleHasPermission from 'App/Models/RoleHasPermission';
+import GroupPermission from 'App/Models/Master-data/GroupPermission'
+import Permission from 'App/Models/Master-data/Permission';
+import RoleHasPermission from 'App/Models/Master-data/RoleHasPermission';
 
 export default class PermissionSeeder extends BaseSeeder {
   public async run() {
@@ -28,7 +28,6 @@ export default class PermissionSeeder extends BaseSeeder {
           p1.name = e.name
           p1.useTransaction(trx)
           await p1.save()
-          // const p = await p1.related('child').createMany(child)
           child.forEach(async el => {
             const s = new Permission()
             s.name = el.name

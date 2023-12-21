@@ -1,7 +1,7 @@
 import User from 'App/Models/User'
 import Factory from '@ioc:Adonis/Lucid/Factory'
-import Role from 'App/Models/Role'
-import Dept from 'App/Models/Dept'
+import Role from 'App/Models/Master-data/Role'
+import Dept from 'App/Models/Master-data/Dept'
 import { DateTime } from 'luxon'
 
 export default Factory.define(User, async ({ faker }) => {

@@ -1,6 +1,6 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
-import Dept from 'App/Models/Dept'
-import Role from 'App/Models/Role'
+import Dept from 'App/Models/Master-data/Dept'
+import Role from 'App/Models/Master-data/Role'
 import User from 'App/Models/User'
 import UserFactory from 'Database/factories/UserFactory'
 import { DateTime } from 'luxon'

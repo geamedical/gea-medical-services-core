@@ -2,8 +2,8 @@ import User from "App/Models/User";
 import BaseRepository from "./BaseRepository";
 import { FindUserAuthLocalDb, HeaderGeaApiServices, HeaderGeaApiServicesLogin, ParamsGeaApiServices, ParamsGeaApiServicesLogin, response, responseErrors } from "App/helper";
 import Database from "@ioc:Adonis/Lucid/Database";
-import Role from "App/Models/Role";
-import Dept from "App/Models/Dept";
+import Role from "App/Models/Master-data/Role";
+import Dept from "App/Models/Master-data/Dept";
 import axios from "axios";
 import Env from '@ioc:Adonis/Core/Env'
 import { DateTime } from "luxon";
@@ -145,7 +145,6 @@ export default class AuthRepository extends BaseRepository {
 
     async updateProfile(id: number, payload: { role_id: number; dept_id: number; name: string; nik: string; email: string; username: string; birthdate: DateTime; gender: string; marital: string; npwp: string; noktp: string; address: string; telp: string; activation: boolean; }) {
         try {
-            console.log(id, payload);
             const q = await User.findOrFail(id)
             q.role_id = payload.role_id
             q.dept_id = payload.dept_id

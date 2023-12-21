@@ -1,8 +1,8 @@
 import { test } from '@japa/runner'
-import Permission from 'App/Models/Permission'
+import Permission from 'App/Models/Master-data/Permission'
 import User from 'App/Models/User'
 
-test.group('Permissions module', () => {
+export function update() {
     test('data update test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -28,7 +28,8 @@ test.group('Permissions module', () => {
             msg: 'success'
         })
     })
-
+}
+export function update_validation() {
     test('data update validation test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -49,4 +50,4 @@ test.group('Permissions module', () => {
             errors: res.body().errors
         })
     })
-})
+}

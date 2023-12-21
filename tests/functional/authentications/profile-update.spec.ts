@@ -2,7 +2,7 @@ import { test } from '@japa/runner'
 import User from 'App/Models/User'
 import moment from 'moment'
 
-test.group('Authentication module', () => {
+export default function profile_update() {
     test('profile update not password test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -55,4 +55,4 @@ test.group('Authentication module', () => {
             msg: 'success',
         })
     })
-})
+}

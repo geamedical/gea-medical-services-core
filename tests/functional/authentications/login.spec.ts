@@ -1,13 +1,12 @@
 import { test } from '@japa/runner'
-
-test.group('Authentication module', () => {
+export function login() {
     test('login test', async ({ client }) => {
         const res = await client
             .post('/api/login')
             .form({
-                username: 'superadmin',
+                username: 'Superadmin',
                 password: '1234'
-            })
+            })  
         res.assertStatus(200)
         res.assertBodyContains({
             status: true,
@@ -19,7 +18,8 @@ test.group('Authentication module', () => {
             msg: 'login success',
         })
     })
-
+}
+export function login_validation() {
     test('login validation test', async ({ client }) => {
         const res = await client
             .post('/api/login')
@@ -36,4 +36,4 @@ test.group('Authentication module', () => {
             msg: 'login error',
         })
     })
-})
+}

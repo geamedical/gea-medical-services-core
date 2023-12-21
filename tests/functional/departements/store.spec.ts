@@ -1,7 +1,7 @@
 import { test } from '@japa/runner'
 import User from 'App/Models/User'
 
-test.group('Departements module', () => {
+export function store() {
     test('data store test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -30,7 +30,8 @@ test.group('Departements module', () => {
             msg: 'success'
         })
     })
-
+}
+export function store_validation() {
     test('data store validation test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -56,4 +57,4 @@ test.group('Departements module', () => {
         res.assertStatus(422)
         res.assertBodyContains({ errors })
     })
-})
+}

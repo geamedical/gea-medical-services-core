@@ -39,7 +39,7 @@ export default class BaseRepository {
             return response(200, q)
         } catch (error) {
             console.log(error);
-            
+
             return responseErrors(error)
         }
     }
@@ -72,9 +72,13 @@ export default class BaseRepository {
     async delete(id: number) {
         try {
             const q = await this.model.find(id);
-            await q.delete();
+            if (q) {
+                await q.delete();
+            }
             return response(200, q)
         } catch (error) {
+            console.log(error);
+
             return responseErrors(error)
         }
     }

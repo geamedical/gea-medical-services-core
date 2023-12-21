@@ -1,8 +1,8 @@
 import { test } from '@japa/runner'
-import Permission from 'App/Models/Permission'
+import Permission from 'App/Models/Master-data/Permission'
 import User from 'App/Models/User'
 
-test.group('Permissions module', () => {
+export default function show() {
     test('data show test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -14,7 +14,17 @@ test.group('Permissions module', () => {
         const res = await client
             .get(`/api/permission/${id}`)
             .loginAs(user!)
-        console.log(res.body().data);
-
+        res.assertStatus(200)
+        res.assertBodyContains({
+            status: true,
+            data: {
+                id: res.body().data.id,
+                name: res.body().data.name,
+                group_permission_id: res.body().data.group_permission_id,
+                created_at: res.body().data.created_at,
+                updated_at: res.body().data.updated_at,
+            },
+            msg: 'success'
+        })
     })
-})
+}

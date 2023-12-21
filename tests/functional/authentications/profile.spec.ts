@@ -1,7 +1,7 @@
 import { test } from '@japa/runner'
 import User from 'App/Models/User'
 
-test.group('Authentication module', () => {
+export default function profile() {
     test('get profile test', async ({ client }) => {
         const user = await User.query().where((query) => {
             query
@@ -38,4 +38,4 @@ test.group('Authentication module', () => {
             msg: 'success',
         })
     })
-})
+}

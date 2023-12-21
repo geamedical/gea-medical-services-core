@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import Role from './Role'
-import Dept from './Dept'
-import FormPermintaanAkses from './FormPermintaanAkses'
+import Role from './Master-data/Role'
+import Dept from './Master-data/Dept'
+import FormPermintaanAkses from './Permintaan-akses/FormPermintaanAkses'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
