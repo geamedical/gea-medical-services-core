@@ -8,9 +8,18 @@ export default class FormReqGasController {
     this.repository = new FormPermintaanRepository();
   }
   public async index({ bouncer, response, request }: HttpContextContract) {
+    const input = request.all()
+    if (input['server-permission']) {
+      const q = await this.repository.getSrvPermission()
+      return response.status(q.statCode).send(q.res)
+    }
+    if (input['dir-permission']) {
+      const q = await this.repository.getDirPermission()
+      return response.status(q.statCode).send(q.res)
+    }
     await bouncer.authorize("read-form-permintaan")
     if (await bouncer.allows('read-form-permintaan')) {
-      const q = await this.repository.paginateData(request.all())
+      const q = await this.repository.paginateData(input)
       return response.status(q.statCode).send(q.res)
     }
     return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
@@ -37,7 +46,7 @@ export default class FormReqGasController {
       const q = await this.repository.setStatus(request.all())
       return response.status(q.statCode).send(q.res)
     }
-    if (await bouncer.allows('read-form-permintaan')) {
+    if (await bouncer.allows('update-form-permintaan')) {
       const q = await this.repository.updateForm(request.param('id'), request.all())
       return response.status(q.statCode).send(q.res)
     }
@@ -57,7 +66,7 @@ export default class FormReqGasController {
     const q = await this.repository.validatePin(request.all())
     return response.status(q.statCode).send(q.res)
   }
-  
+
   public async formset({ response, auth }: HttpContextContract) {
     const q = await this.repository.attrForm(auth.user!)
     return response.status(q.statCode).send(q.res)

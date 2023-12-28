@@ -14,7 +14,11 @@ export default class UsersController {
             const q = await this.repository.getUsersPaginate(request.all())
             return response.status(q.statCode).send(q.res)
         }
-        const q = await this.repository.getUsersPaginate(request.all())
+        return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
+    }
+
+    public async user_login({ response, request }: HttpContextContract) {
+        const q = await this.repository.getUsersLogin(request.all())
         return response.status(q.statCode).send(q.res)
     }
 
@@ -54,14 +58,10 @@ export default class UsersController {
         return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
     }
     public async attr_form({ response }: HttpContextContract) {
-        try {
-            const roles = await Role.all()
-            const depts = await Dept.all()
-            return response.send({
-                status: true, data: { roles, depts }, msg: 'attr success'
-            })
-        } catch (error) {
-            return response.abort({ status: false, data: error.messages, msg: 'attr error' })
-        }
+        const roles = await Role.all()
+        const depts = await Dept.all()
+        return response.send({
+            status: true, data: { roles, depts }, msg: 'attr success'
+        })
     }
 }

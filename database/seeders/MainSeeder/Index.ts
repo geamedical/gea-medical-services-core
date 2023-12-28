@@ -11,5 +11,6 @@ export default class IndexSeeder extends BaseSeeder {
     await this.runSeeder(await import('../Permission'))
     await this.runSeeder(await import('../User'))
     await this.runSeeder(await import('../HasAccess'))
+    await this.runSeeder(await import('../PemissionServer'))
   }
 }

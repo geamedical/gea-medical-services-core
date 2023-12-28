@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
 import User from "../User";
 import ServerPermission from "../Permissiion/ServerPermission";
+import FormPermintaanAkses from "./FormPermintaanAkses";
 
 export default class AccessServerRequest extends BaseModel {
   @column({ isPrimary: true })
@@ -9,6 +10,8 @@ export default class AccessServerRequest extends BaseModel {
 
   @column()
   public user_id: number;
+  @column()
+  public form_permintaan_akses_id: number;
   @column()
   public server_id: number;
   @column()
@@ -26,6 +29,11 @@ export default class AccessServerRequest extends BaseModel {
     foreignKey: "user_id",
   })
   public yang_mengajukan: BelongsTo<typeof User>;
+
+  @belongsTo(() => FormPermintaanAkses, {
+    foreignKey: "form_permintaan_akses_id",
+  })
+  public form_permintaan_akses: BelongsTo<typeof FormPermintaanAkses>;
 
   @belongsTo(() => User, {
     foreignKey: "authorization_id",

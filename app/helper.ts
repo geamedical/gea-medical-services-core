@@ -207,3 +207,6 @@ export async function ReadDirectory(path) {
     return responseErrors(error);
   }
 }
+export function findOnArrayByObjectName(array, objname, value) {
+  return array.find(obj => obj[objname] === value);
+}

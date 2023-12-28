@@ -37,11 +37,11 @@ export default class FormPermintaanValidator extends Messages {
         primary_authorization_id: schema.number(),
         secondary_authorization_id: schema.number(),
         dirname: schema.string(),
+        read: schema.enum(['y', 'n']),
+        write: schema.enum(['y', 'n']),
       })
     ),
-    server: schema.array.optional([
-      rules.minLength(1),
-    ]).members(
+    server: schema.array.optional().members(
       schema.object().members({
         id: schema.number(),
         authorization_id: schema.number(),

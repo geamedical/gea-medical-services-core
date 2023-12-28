@@ -1,11 +1,15 @@
-import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasMany, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from '../User'
+import AccessServerRequest from './AccessServerRequest'
+import GroupFormPermintaanAkses from './GroupFormPermintaanAkses'
+import AccessNasDirectoryRequest from './AccessNasDirectoryRequest'
 
 export default class FormPermintaanAkses extends BaseModel {
   public static table = 'form_permintaan_akses'
   @column({ isPrimary: true })
   public id: number
+  @column()
+  public group_form_permintaan_akses_id: number
   @column()
   public user_id: number
   @column()
@@ -27,14 +31,45 @@ export default class FormPermintaanAkses extends BaseModel {
   @column()
   public feedback_message: string
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  @belongsTo(() => GroupFormPermintaanAkses, {
+    foreignKey: 'id',
+    localKey:'group_form_permintaan_akses_id'
+  })
+  public parents: BelongsTo<typeof GroupFormPermintaanAkses>
 
   @belongsTo(() => User, {
     foreignKey: 'user_id',
   })
   public user: BelongsTo<typeof User>
+  @belongsTo(() => User, {
+    foreignKey: 'accept_primary_id',
+  })
+  public accept_primary: BelongsTo<typeof User>
+  @belongsTo(() => User, {
+    foreignKey: 'accept_secondary_id',
+  })
+  public accept_secondary: BelongsTo<typeof User>
+
+  @hasMany(() => AccessServerRequest, {
+    foreignKey: 'form_permintaan_akses_id',
+    localKey: 'id',
+    onQuery(query) {
+      if (!query.isRelatedSubQuery) {
+        query
+          .preload('server_detail')
+      }
+    }
+  })
+  public akses_server: HasMany<typeof AccessServerRequest>
+  @hasMany(() => AccessNasDirectoryRequest, {
+    foreignKey: 'form_permintaan_akses_id',
+    localKey: 'id',
+    onQuery(query) {
+      if (!query.isRelatedSubQuery) {
+        query
+          .preload('nas_detail')
+      }
+    }
+  })
+  public akses_server_nas_folder: HasMany<typeof AccessNasDirectoryRequest>
 }

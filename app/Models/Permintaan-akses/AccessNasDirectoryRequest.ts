@@ -2,10 +2,13 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from '../User'
 import NasDirPermission from '../Permissiion/NasDirPermission'
+import FormPermintaanAkses from './FormPermintaanAkses'
 
 export default class AccessNasDirectoryRequest extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+  @column()
+  public form_permintaan_akses_id: number
   @column()
   public user_id: number
   @column()
@@ -20,6 +23,10 @@ export default class AccessNasDirectoryRequest extends BaseModel {
   public authorization_secondary_axec: string
   @column()
   public status: string
+  @column()
+  public read: string
+  @column()
+  public write: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -36,7 +43,7 @@ export default class AccessNasDirectoryRequest extends BaseModel {
     foreignKey: "authorization_primary_id",
   })
   public yang_mengizinkan_utama: BelongsTo<typeof User>;
-  
+
   @belongsTo(() => User, {
     foreignKey: "authorization_secondary_id",
   })
@@ -46,4 +53,8 @@ export default class AccessNasDirectoryRequest extends BaseModel {
     foreignKey: "nas_dir_permission_id",
   })
   public nas_detail: BelongsTo<typeof NasDirPermission>;
+  @belongsTo(() => FormPermintaanAkses, {
+    foreignKey: "form_permintaan_akses_id",
+  })
+  public form_permintaan_akses: BelongsTo<typeof FormPermintaanAkses>;
 }

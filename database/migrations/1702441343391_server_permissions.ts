@@ -17,6 +17,7 @@ export default class extends BaseSchema {
     this.schema.createTable('access_server_requests', (table) => {
       table.increments('id')
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.integer('form_permintaan_akses_id').unsigned().references('id').inTable('form_permintaan_akses').onDelete('CASCADE')
       table.integer('server_id').unsigned().references('id').inTable('server_permissions').onDelete('CASCADE')
       table.integer('authorization_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.enum('status', ['y','n','w']).defaultTo('w')

@@ -39,7 +39,6 @@ Route.group(() => {
   })
   Route.post("login", "WebApps/AuthController.login");
   Route.post("form-permintaan-nemp", "WebApps/Permintaan-akses/FormReqGasController.store");
-  Route.get("attr_form", "WebApps/UsersController.attr_form",);
   Route.group(() => {
     Route.get("profile", "WebApps/AuthController.profile");
     Route.post("profile-update", "WebApps/AuthController.profileUpdate");
@@ -47,6 +46,8 @@ Route.group(() => {
     Route.resource("notification", "WebApps/NotificationsController").apiOnly();
     // MASTER DATA::STARTED
     Route.resource("users", "WebApps/Master-data/UsersController").apiOnly();
+    Route.get("users-login", "WebApps/Master-data/UsersController.user_login")
+    Route.get("users-attr", "WebApps/Master-data/UsersController.attr_form")
     Route.resource("role", "WebApps/Master-data/RolesController").apiOnly();
     Route.resource("permission", "WebApps/Master-data/PermissionsController").apiOnly();
     Route.resource("dept", "WebApps/Master-data/DeptsController").apiOnly();
