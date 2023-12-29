@@ -25,7 +25,7 @@ export default class RoleRepository extends BaseRepository {
                 })
                 .orderBy([
                     {
-                        column: sortBy !== '' ? sortBy : 'nik',
+                        column: sortBy !== '' ? sortBy : 'created_at',
                         order: sortDesc ? 'desc' : 'asc',
                     }
                 ])
