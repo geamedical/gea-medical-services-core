@@ -10,7 +10,7 @@ export default class RolesController {
     public async index({ bouncer, response, request }: HttpContextContract) {
         await bouncer.authorize("read-role")
         if (await bouncer.allows('read-role')) {
-            const q = await this.repository.paginate('rolename', 'created_at', request.all())
+            const q = await this.repository.paginateRole(request.all())
             return response.status(q.statCode).send(q.res)
         }
         return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })

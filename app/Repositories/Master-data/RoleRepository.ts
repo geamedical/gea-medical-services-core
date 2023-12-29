@@ -9,6 +9,34 @@ export default class RoleRepository extends BaseRepository {
     constructor() {
         super(Role);
     }
+    async paginateRole(req) {
+        try {
+            const { sortBy, search, sortDesc, page, limit } = req
+            const count = await Database
+                .from('roles')
+                .count('* as total')
+            const q = await Role.query()
+                .where((query)=>{
+                    query
+                    .where(sortBy !== '' ? sortBy : 'company', 'LIKE', '%' + search + '%')
+                    .orWhere(sortBy !== '' ? sortBy : 'code', 'LIKE', '%' + search + '%')
+                    .orWhere(sortBy !== '' ? sortBy : 'rolename', 'LIKE', '%' + search + '%')
+                    .orWhere(sortBy !== '' ? sortBy : 'coderole', 'LIKE', '%' + search + '%')
+                })
+                .orderBy([
+                    {
+                        column: sortBy !== '' ? sortBy : 'nik',
+                        order: sortDesc ? 'desc' : 'asc',
+                    }
+                ])
+                .preload('permission')
+                .preload('users')
+                .paginate(page, limit < 5 ? count[0].total : limit)
+            return response(200, q)
+        } catch (error) {
+            return responseErrors(error)
+        }
+    }
     async getRolePermissionPaginate(req: { sortDesc: string; page: number; limit: number; }) {
         try {
             const { page, limit } = req
