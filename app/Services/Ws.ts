@@ -11,11 +11,12 @@ class Ws {
         if (this.booted) {
             return
         }
-        if (Env.get('PORT_FRONTEND') === '') {
-            this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}`
-        } else {
-            this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}:${Env.get('PORT_FRONTEND')}`
-        }
+        // if (Env.get('PORT_FRONTEND') === '') {
+        //     this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}`
+        // } else {
+        //     this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}:${Env.get('PORT_FRONTEND')}`
+        // }
+        this.frontend = `${Env.get('PROTOCOL_FRONTEND')}://${Env.get('HOST_FRONTEND')}`
         this.booted = true
         this.io = new Server(AdonisServer.instance, {
             cors: {
