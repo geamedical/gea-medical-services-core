@@ -29,8 +29,6 @@ export default class RoleRepository extends BaseRepository {
                         order: sortDesc ? 'desc' : 'asc',
                     }
                 ])
-                .preload('permission')
-                .preload('users')
                 .paginate(page, limit < 5 ? count[0].total : limit)
             return response(200, q)
         } catch (error) {
