@@ -8,8 +8,8 @@ export default class ServerPermissionsController {
         this.repository = new ServerPermissionRepository();
     }
     public async index({ bouncer, response, request }: HttpContextContract) {
-        await bouncer.authorize("read-permission")
-        if (await bouncer.allows('read-permission')) {
+        await bouncer.authorize("read-server")
+        if (await bouncer.allows('read-server')) {
             const q = await this.repository.paginateServer(request.all())
             return response.status(q.statCode).send(q.res)
         }
@@ -17,8 +17,8 @@ export default class ServerPermissionsController {
     }
 
     public async store({ bouncer, request, response }: HttpContextContract) {
-        await bouncer.authorize("create-permission")
-        if (await bouncer.allows('create-permission')) {
+        await bouncer.authorize("create-server")
+        if (await bouncer.allows('create-server')) {
             const payload = await request.validate(ServerPermissionValidator)
             const q = await this.repository.store(payload)
             return response.status(q.statCode).send(q.res)
@@ -27,8 +27,8 @@ export default class ServerPermissionsController {
     }
 
     public async show({ bouncer, request, response }: HttpContextContract) {
-        await bouncer.authorize("read-permission")
-        if (await bouncer.allows('read-permission')) {
+        await bouncer.authorize("read-server")
+        if (await bouncer.allows('read-server')) {
             const q = await this.repository.findServer(request.param('id'))
             return response.status(q.statCode).send(q.res)
         }
@@ -36,8 +36,8 @@ export default class ServerPermissionsController {
     }
 
     public async update({ bouncer, request, response }: HttpContextContract) {
-        await bouncer.authorize("update-permission")
-        if (await bouncer.allows('update-permission')) {
+        await bouncer.authorize("update-server")
+        if (await bouncer.allows('update-server')) {
             const payload = await request.validate(ServerPermissionValidator)
             const q = await this.repository.update(request.param('id'), payload)
             return response.status(q.statCode).send(q.res)
@@ -46,8 +46,8 @@ export default class ServerPermissionsController {
     }
 
     public async destroy({ bouncer, request, response }: HttpContextContract) {
-        await bouncer.authorize("delete-permission")
-        if (await bouncer.allows('delete-permission')) {
+        await bouncer.authorize("delete-server")
+        if (await bouncer.allows('delete-server')) {
             const q = await this.repository.delete(request.param('id'))
             return response.status(q.statCode).send(q.res)
         }

@@ -124,6 +124,32 @@ export const { actions } = Bouncer
     .define('delete-documentation', (user: User) => {
         return permissionGuard(user.role_id, 'delete-documentation')
     })
+    // NAS SERVER AUTHORIZATION
+    .define('create-nasserver', (user: User) => {
+        return permissionGuard(user.role_id, 'create-nasserver')
+    })
+    .define('read-nasserver', (user: User) => {
+        return permissionGuard(user.role_id, 'read-nasserver')
+    })
+    .define('update-nasserver', (user: User) => {
+        return permissionGuard(user.role_id, 'update-nasserver')
+    })
+    .define('delete-nasserver', (user: User) => {
+        return permissionGuard(user.role_id, 'delete-nasserver')
+    })
+    // SERVER AUTHORIZATION
+    .define('create-server', (user: User) => {
+        return permissionGuard(user.role_id, 'create-server')
+    })
+    .define('read-server', (user: User) => {
+        return permissionGuard(user.role_id, 'read-server')
+    })
+    .define('update-server', (user: User) => {
+        return permissionGuard(user.role_id, 'update-server')
+    })
+    .define('delete-server', (user: User) => {
+        return permissionGuard(user.role_id, 'delete-server')
+    })
 /*
 |--------------------------------------------------------------------------
 | Bouncer Policies

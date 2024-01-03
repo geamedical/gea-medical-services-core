@@ -6,29 +6,41 @@ export default class AksesServersController {
   constructor() {
     this.repository = new AksesServerRepository();
   }
-  public async index({ response, request }: HttpContextContract) {
-    const q = await this.repository.paginateRelation(request.all())
-    return response.status(q.statCode).send(q.res)
+  public async index({ bouncer, response, request }: HttpContextContract) {
+    if (await bouncer.allows('read-server')) {
+      const q = await this.repository.paginateRelation(request.all())
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async show({ response, request }: HttpContextContract) {
-    await this.repository.find('id', request.param('id'))
-    return response.status(200).send(request.all())
+  public async show({ bouncer, response, request }: HttpContextContract) {
+    if (await bouncer.allows('read-server')) {
+      await this.repository.find('id', request.param('id'))
+      return response.status(200).send(request.all())
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async update({ response, request }: HttpContextContract) {
-    const q = await this.repository.find('id', request.param('id'))
-    const update = {}
-    update['user_id'] = q.res.data.user_id
-    update['server_id'] = q.res.data.server_id
-    update['authorization_id'] = q.res.data.authorization_id
-    update['status'] = request.input('status')
-    await this.repository.update(request.param('id'), update)
-    return response.status(200).send(request.all())
+  public async update({ bouncer, response, request }: HttpContextContract) {
+    if (await bouncer.allows('read-server')) {
+      const q = await this.repository.find('id', request.param('id'))
+      const update = {}
+      update['user_id'] = q.res.data.user_id
+      update['server_id'] = q.res.data.server_id
+      update['authorization_id'] = q.res.data.authorization_id
+      update['status'] = request.input('status')
+      await this.repository.update(request.param('id'), update)
+      return response.status(200).send(request.all())
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async destroy({ request, response }: HttpContextContract) {
-    const q = await this.repository.delete(request.param('id'))
-    return response.status(q.statCode).send(q.res)
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
+    if (await bouncer.allows('delete-server')) {
+      const q = await this.repository.delete(request.param('id'))
+      return response.status(q.statCode).send(q.res)
+    }
+    return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 }
