@@ -5,7 +5,6 @@ import moment from "moment";
 import Env from "@ioc:Adonis/Core/Env";
 import User from "./Models/User";
 import Hash from "@ioc:Adonis/Core/Hash";
-const fs = require("fs").promises;
 
 export async function UploadFile(
   file: {
@@ -193,16 +192,6 @@ export async function FindUserAuthLocalDb(username: string, password: string) {
     } else {
       return response(401, { username: findUser!.username, password: null });
     }
-  } catch (error) {
-    return responseErrors(error);
-  }
-}
-
-export async function ReadDirectory(path) {
-  try {
-    const files = await fs.readdir(path);
-    const jsonResponse = { files };
-    return response(200, { readir: jsonResponse['files'] });
   } catch (error) {
     return responseErrors(error);
   }

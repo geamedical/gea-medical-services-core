@@ -20,12 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import Application from '@ioc:Adonis/Core/Application'
-import { ReadDirectory } from 'App/helper';
 
-
-Route.get('dir', async ({ request }) => {
-  return await ReadDirectory(request.input('directory'))
-})
 Route.group(() => {
   Route.get('images/:folder/:filename', async ({ params, response }) => {
     const folder = params.folder.split("&")

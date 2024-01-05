@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import NasDirPermissionRepository from 'App/Repositories/Permission/NasDirPermissionRepository';
 import { NasDirValidator } from 'App/Validators/DeptValidator';
+import ServerNas from 'App/serverNas';
 
 export default class NasDirPermissionsController {
     private repository: any;
@@ -8,9 +9,14 @@ export default class NasDirPermissionsController {
         this.repository = new NasDirPermissionRepository();
     }
     public async index({ bouncer, response, request }: HttpContextContract) {
-        await bouncer.authorize("read-nasserver")
+        const input = request.all()
+        if (input['directory'] === 'true') {
+            const sn = new ServerNas();
+            const directoryNas = await sn.directoryFileStation()
+            return directoryNas
+        }
         if (await bouncer.allows('read-nasserver')) {
-            const q = await this.repository.paginateNas(request.all())
+            const q = await this.repository.paginateNas(input)
             return response.status(q.statCode).send(q.res)
         }
         return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
