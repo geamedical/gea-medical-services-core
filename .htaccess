@@ -1,0 +1,21 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/geamedic/backend/build"
+PassengerBaseURI "/"
+PassengerNodejs "/home/geamedic/nodevenv/backend/build/18/bin/node"
+PassengerAppType node
+PassengerStartupFile server.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # Perbaikan: Tambahkan %{HTTP_HOST} pada RewriteCond
+  RewriteCond %{HTTP_HOST} !^geamedical\.net$ [NC]
+  RewriteRule ^(.*)$ https://geamedical.net/$1 [R,L]
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule . /index.html [L]
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END

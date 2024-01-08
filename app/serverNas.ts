@@ -8,7 +8,7 @@ export default class ServerNas {
     private state: State;
     constructor() {
         this.state = {
-            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
+            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}/webapi`,
         };
     }
 
@@ -44,6 +44,7 @@ export default class ServerNas {
 
     async directoryFileStation() {
         let res = {
+            status: 200,
             success: false,
             data: []
         }
@@ -52,11 +53,13 @@ export default class ServerNas {
         let url = `${this.state.bashUrl}/entry.cgi/FileStation/file_share.cgi?api=SYNO.FileStation.List&version=1&method=list_share&_sid=${tokenSid}`
         await axios.get(url)
             .then(response => {
+                res.status = 200
                 res.success = true
                 res.data = response.data.data.shares
             })
             .catch(error => {
-                res.success = true
+                res.status = 400
+                res.success = false
                 res.data = error
             })
         return res
