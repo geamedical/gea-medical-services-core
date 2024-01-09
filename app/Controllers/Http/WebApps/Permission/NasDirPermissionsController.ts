@@ -13,7 +13,8 @@ export default class NasDirPermissionsController {
         if (input['directory'] === 'true') {
             const sn = new ServerNas();
             const directoryNas = await sn.directoryFileStation()
-            return response.status(directoryNas.status).send({ data: directoryNas.data, success: directoryNas.success })
+            return directoryNas
+            // return response.status(directoryNas.status).send({ data: directoryNas.data, success: directoryNas.success })
         }
         if (await bouncer.allows('read-nasserver')) {
             const q = await this.repository.paginateNas(input)

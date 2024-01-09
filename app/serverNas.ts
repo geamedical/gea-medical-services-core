@@ -8,7 +8,8 @@ export default class ServerNas {
     private state: State;
     constructor() {
         this.state = {
-            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
+            // bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
+            bashUrl: `http://db.geamedical.net:50008/webapi`,
         };
     }
 
@@ -25,7 +26,7 @@ export default class ServerNas {
         fd.append('passwd', 'Gea@2022medical#');
         fd.append('session', 'FileStation');
         fd.append('format', 'cookie');
-        await axios.post(`${this.state.bashUrl}/auth.cgi`, fd, {
+        await axios.post(`http://db.geamedical.net:50008/webapi/auth.cgi`, fd, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -58,6 +59,8 @@ export default class ServerNas {
                 res.data = response.data.data.shares
             })
             .catch(error => {
+                console.log(error);
+                
                 res.status = 400
                 res.success = false
                 res.data = error

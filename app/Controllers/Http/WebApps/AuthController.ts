@@ -26,6 +26,8 @@ export default class AuthController {
             });
             return response.status(200).send({ status: true, data: token, msg: 'login success' })
         } catch (error) {
+            console.log(error);
+            
             const msg = error.code === 'E_INVALID_AUTH_PASSWORD' ? error.responseText : error.messages
             return response.abort({ status: false, data: msg, msg: 'login error' })
         }
