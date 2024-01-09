@@ -8,7 +8,7 @@ export default class ServerNas {
     private state: State;
     constructor() {
         this.state = {
-            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}/webapi`,
+            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
         };
     }
 
