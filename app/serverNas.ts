@@ -1,4 +1,5 @@
 import axios from "axios";
+import https from "https"
 import Env from '@ioc:Adonis/Core/Env'
 
 interface State {
@@ -8,9 +9,17 @@ export default class ServerNas {
     private state: State;
     constructor() {
         this.state = {
-            // bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
-            bashUrl: `http://db.geamedical.net:50008/webapi`,
+            bashUrl: `${Env.get('NAS_PROTOCOL')}://${Env.get('NAS_HOST')}:${Env.get('NAS_PORT')}/webapi`,
         };
+    }
+
+    instance(){
+        const instance = axios.create({
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false
+            })
+        });
+        return instance
     }
 
     async getSID() {
@@ -22,11 +31,12 @@ export default class ServerNas {
         fd.append('api', 'SYNO.API.Auth');
         fd.append('version', '3');
         fd.append('method', 'login');
-        fd.append('account', 'alan');
-        fd.append('passwd', 'Gea@2022medical#');
+        fd.append('account', 'sop.gea');
+        fd.append('passwd', 'Geamed123!');
         fd.append('session', 'FileStation');
         fd.append('format', 'cookie');
-        await axios.post(`http://db.geamedical.net:50008/webapi/auth.cgi`, fd, {
+        
+        await this.instance().post(`${this.state.bashUrl}/auth.cgi`, fd, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -37,6 +47,8 @@ export default class ServerNas {
                 res.success = true
             })
             .catch(err => {
+                console.log(err);
+                
                 res.sid = err
                 res.success = false
             })
@@ -52,7 +64,7 @@ export default class ServerNas {
         const t = await this.getSID()
         let tokenSid = t.success ? t.sid : ''
         let url = `${this.state.bashUrl}/entry.cgi/FileStation/file_share.cgi?api=SYNO.FileStation.List&version=1&method=list_share&_sid=${tokenSid}`
-        await axios.get(url)
+        await this.instance().get(url)
             .then(response => {
                 res.status = 200
                 res.success = true
@@ -60,7 +72,7 @@ export default class ServerNas {
             })
             .catch(error => {
                 console.log(error);
-                
+
                 res.status = 400
                 res.success = false
                 res.data = error
