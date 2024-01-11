@@ -47,8 +47,6 @@ export default class ServerNas {
                 res.success = true
             })
             .catch(err => {
-                console.log(err);
-                
                 res.sid = err
                 res.success = false
             })
