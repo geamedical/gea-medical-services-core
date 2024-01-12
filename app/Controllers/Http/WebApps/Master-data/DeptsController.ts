@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Dept from 'App/Models/Master-data/Dept'
-import DeptRepository from 'App/Repositories/Master-data/DeptRepository';
+import DeptRepository from 'App/Controllers/Repositories/Master-data/DeptRepository';
 import { DeptValidator } from 'App/Validators/DeptValidator';
 
 export default class DeptsController {

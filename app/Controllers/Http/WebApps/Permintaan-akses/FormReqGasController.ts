@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import FormPermintaanRepository from 'App/Repositories/Permintaan-akses/FormPermintaanRepository';
+import FormPermintaanRepository from 'App/Controllers/Repositories/Permintaan-akses/FormPermintaanRepository';
 import FormPermintaanValidator from 'App/Validators/FormPermintaanValidator';
 
 export default class FormReqGasController {

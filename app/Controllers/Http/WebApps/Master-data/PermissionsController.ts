@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import PermissionRepository from 'App/Repositories/Master-data/PermissionRepository';
+import PermissionRepository from 'App/Controllers/Repositories/Master-data/PermissionRepository';
 import PermissionValidator from "App/Validators/PermissionValidator"
 
 export default class PermissionsController {
@@ -51,7 +51,7 @@ export default class PermissionsController {
 
     public async destroy({ bouncer, request, response }: HttpContextContract) {
         if (await bouncer.allows('delete-permission')) {
-            const q = await this.repository.delete(request.param('id'))
+            const q = await this.repository.deleted(request.param('id'))
             return response.status(q.statCode).send(q.res)
         }
         return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })

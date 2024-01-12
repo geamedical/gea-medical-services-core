@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import Event from '@ioc:Adonis/Core/Event'
-import AuthRepository from 'App/Repositories/AuthRepository';
+import AuthRepository from 'App/Controllers/Repositories/AuthRepository';
 import { LoginValidator } from 'App/Validators/AuthValidator';
 import { AuthValidatorUpdate, PasswordValidator } from 'App/Validators/UserValidator'
 import { DateTime } from 'luxon';
@@ -21,13 +21,14 @@ export default class AuthController {
             const payload = await request.validate(LoginValidator)
             const q = await this.repository.validateLoginSync(payload)
             let credential = q.res.data
-            const token = await auth.use("api").attempt(credential.username, credential.password, {
-                expiresIn: "1 days",
-            });
-            return response.status(200).send({ status: true, data: token, msg: 'login success' })
+            if (credential.username !== '' && credential.password !== '') {
+                const token = await auth.use("api").attempt(credential.username, credential.password, {
+                    expiresIn: "1 days",
+                });
+                return response.status(200).send({ status: true, data: token, msg: 'login success' })
+            }
+            return response.status(401).send({ status: false, data: null, msg: 'login error, user not found on local db or erp system!' })
         } catch (error) {
-            console.log(error);
-            
             const msg = error.code === 'E_INVALID_AUTH_PASSWORD' ? error.responseText : error.messages
             return response.abort({ status: false, data: msg, msg: 'login error' })
         }

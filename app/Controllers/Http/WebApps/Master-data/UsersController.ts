@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Dept from 'App/Models/Master-data/Dept'
 import Role from 'App/Models/Master-data/Role'
-import UserRepository from 'App/Repositories/Master-data/UserRepository'
+import UserRepository from 'App/Controllers/Repositories/Master-data/UserRepository'
 import { UserValidatorStore, UserValidatorUpdate } from 'App/Validators/UserValidator'
 export default class UsersController {
     private repository: any;

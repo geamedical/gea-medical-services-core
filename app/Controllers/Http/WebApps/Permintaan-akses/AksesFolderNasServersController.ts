@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import AccessServerRequest from 'App/Models/Permintaan-akses/AccessServerRequest';
 import ServerPermission from 'App/Models/Permissiion/ServerPermission';
-import AksesFolderNasServerRepository from 'App/Repositories/Permintaan-akses/AksesFolderNasServerRepository';
+import AksesFolderNasServerRepository from 'App/Controllers/Repositories/Permintaan-akses/AksesFolderNasServerRepository';
 
 export default class AksesFolderNasServersController {
   private repository: any;

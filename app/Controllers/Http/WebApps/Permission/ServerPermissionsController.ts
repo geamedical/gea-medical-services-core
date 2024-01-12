@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import ServerPermissionRepository from 'App/Repositories/Permission/ServerPermissionRepository';
+import ServerPermissionRepository from 'App/Controllers/Repositories/Permission/ServerPermissionRepository';
 import { ServerPermissionValidator } from 'App/Validators/DeptValidator';
 
 export default class ServerPermissionsController {

@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import NasDirPermissionRepository from 'App/Repositories/Permission/NasDirPermissionRepository';
+import NasDirPermissionRepository from 'App/Controllers/Repositories/Permission/NasDirPermissionRepository';
 import { NasDirValidator } from 'App/Validators/DeptValidator';
 import ServerNas from 'App/serverNas';
 

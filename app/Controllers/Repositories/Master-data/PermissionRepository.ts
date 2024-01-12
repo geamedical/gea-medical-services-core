@@ -64,4 +64,20 @@ export default class PermissionRepository extends BaseRepository {
             return responseErrors(error)
         }
     }
+    async deleted(id: number) {
+        try {
+            const q = await Permission.query().where('id', id).preload('parent').first()
+            if (q) {
+                const cek = await Database.from('permissions').where('group_permission_id', q.group_permission_id).count('* as total')
+                if (cek[0].total < 1) {
+                    const l = await GroupPermission.find(q.group_permission_id)
+                    await l?.delete()
+                }
+                return await this.delete(id)
+            }
+            return response(404, q)
+        } catch (error) {
+            return responseErrors(error)
+        }
+    }
 }

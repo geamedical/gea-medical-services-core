@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AksesServerRepository from 'App/Repositories/Permintaan-akses/AksesServerRepository';
+import AksesServerRepository from 'App/Controllers/Repositories/Permintaan-akses/AksesServerRepository';
 
 export default class AksesServersController {
   private repository: any;

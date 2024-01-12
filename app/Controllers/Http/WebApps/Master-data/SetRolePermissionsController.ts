@@ -3,7 +3,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 import Permission from 'App/Models/Master-data/Permission'
 import Role from 'App/Models/Master-data/Role'
-import RoleRepository from 'App/Repositories/Master-data/RoleRepository'
+import RoleRepository from 'App/Controllers/Repositories/Master-data/RoleRepository'
 
 export default class SetRolePermissionsController {
     private roleRepository: any;

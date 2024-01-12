@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import RoleRepository from 'App/Repositories/Master-data/RoleRepository';
+import RoleRepository from 'App/Controllers/Repositories/Master-data/RoleRepository';
 import RoleValidator from 'App/Validators/RoleValidator'
 
 export default class RolesController {

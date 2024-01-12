@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import DocumentationRepository from 'App/Repositories/Master-data/DocumentationRepository';
+import DocumentationRepository from 'App/Controllers/Repositories/Master-data/DocumentationRepository';
 import { DocumentationValidator } from 'App/Validators/DocumentationValidator';
 
 export default class DocumentationsController {
