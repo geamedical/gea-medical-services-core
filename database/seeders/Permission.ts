@@ -15,6 +15,8 @@ export default class PermissionSeeder extends BaseSeeder {
         { name: 'departement' },
         { name: 'form-permintaan' },
         { name: 'documentation' },
+        { name: 'server' },
+        { name: 'nasserver' },
       ]
       groupPermission.forEach(async e => {
         const child = [
