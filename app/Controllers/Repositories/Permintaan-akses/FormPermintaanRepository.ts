@@ -111,7 +111,7 @@ export default class FormPermintaanRepository extends BaseRepository {
     } catch (error) {
       return responseErrors(error);
     } finally {
-      req['user_target'] = await Dept.query().whereIn('deptname', ['GA', 'IT', 'IT Support', 'IT Programmer']).preload('users')
+      req['user_target'] = await Dept.query().whereIn('deptname', ['HRGA', 'GA', 'IT', 'IT Support']).preload('users')
       req['message'] = `INFORMASI PERMINTAAN AKSES: Seseorang atas nama ${string.capitalCase(req.user.name)} telah melakukan permohonan permintaan dan menunggu konfirmasi anda. Periksa sekarang!`
       Event.emit("notif:permintaan-akses", req);
       return response(200, req);
