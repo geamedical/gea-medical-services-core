@@ -29,8 +29,8 @@ export default class AuthController {
             }
             return response.status(401).send({ status: false, data: null, msg: 'login error, user not found on local db or erp system!' })
         } catch (error) {
-            const msg = error.code === 'E_INVALID_AUTH_PASSWORD' ? error.responseText : error.messages
-            return response.abort({ status: false, data: msg, msg: 'login error' })
+            console.log(error);
+            return response.abort({ status: false, data: error.code, msg: 'login error' })
         }
     }
     /*

@@ -31,18 +31,18 @@ export default class AuthRepository extends BaseRepository {
                                 dataUser['password'] = credential.password
                                 dataUser['pin'] = credential.password
                                 dataUser['activation'] = 'valid'
+                                dataUser['username'] = credential.username
                                 dataUser['islogin'] = 'y'
-                                const user = await this.createOrUpdateUser(dept, role, dataUser)
-                                resdata.username = user.username
+                                await this.createOrUpdateUser(dept, role, dataUser)
+                                resdata.username = credential.username
                                 resdata.password = credential.password
                             } else {
-                                
                                 // cari ke db local
                                 const find = await FindUserAuthLocalDb(credential.username, credential.password)
                                 resdata.username = find?.statCode === 200 ? find.res.data.username : ''
                                 resdata.password = find?.statCode === 200 ? find.res.data.password : ''
                             }
-                        }).catch(async (e) => {
+                        }).catch(async () => {
                             // cari ke db local
                             const find = await FindUserAuthLocalDb(credential.username, credential.password)
                             resdata.username = find?.statCode === 200 ? find.res.data.username : ''
@@ -101,29 +101,11 @@ export default class AuthRepository extends BaseRepository {
         }
     }
     async createOrUpdateUser(dept: number, role: number, userdata: any) {
-        const cekUser = await Database.from('users').where('noktp', userdata.noktp).count('* as total')
+        const cekUser = await Database.from('users')
+        .where('noktp', userdata.noktp)
+        .andWhere('nik', userdata.emp_code)
+        .count('* as total')
         if (cekUser[0].total > 0) {
-            const create = new User
-            create.dept_id = dept
-            create.role_id = role
-            create.name = userdata.emp_name
-            create.pin = userdata.password
-            create.nik = userdata.emp_code
-            create.email = userdata.mail
-            create.username = userdata.emp_name
-            create.birthdate = userdata.birthdate
-            create.gender = userdata.gender
-            create.marital = userdata.marital
-            create.npwp = userdata.npwp
-            create.noktp = userdata.noktp
-            create.address = userdata.emp_add
-            create.telp = userdata.tel
-            create.password = userdata.password
-            create.activation = userdata.activation
-            create.islogin = userdata.islogin
-            await create.save()
-            return create
-        } else {
             const update = await User.findByOrFail('noktp', userdata.noktp)
             update.dept_id = dept
             update.role_id = role
@@ -131,7 +113,7 @@ export default class AuthRepository extends BaseRepository {
             update.pin = userdata.password
             update.nik = userdata.emp_code
             update.email = userdata.mail
-            update.username = userdata.emp_name
+            update.username = userdata.username
             update.birthdate = userdata.birthdate
             update.gender = userdata.gender
             update.marital = userdata.marital
@@ -144,6 +126,27 @@ export default class AuthRepository extends BaseRepository {
             update.islogin = userdata.islogin
             await update.save()
             return update
+        } else {
+            const create = new User
+            create.dept_id = dept
+            create.role_id = role
+            create.name = userdata.emp_name
+            create.pin = userdata.password
+            create.nik = userdata.emp_code
+            create.email = userdata.mail
+            create.username = userdata.username
+            create.birthdate = userdata.birthdate
+            create.gender = userdata.gender
+            create.marital = userdata.marital
+            create.npwp = userdata.npwp
+            create.noktp = userdata.noktp
+            create.address = userdata.emp_add
+            create.telp = userdata.tel
+            create.password = userdata.password
+            create.activation = userdata.activation
+            create.islogin = userdata.islogin
+            await create.save()
+            return create
         }
     }
 
