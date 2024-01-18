@@ -29,9 +29,7 @@ export default class FormPermintaanValidator extends Messages {
         notes: schema.string()
       })
     ),
-    directory: schema.array.optional([
-      rules.minLength(1),
-    ]).members(
+    directory: schema.array.optional().members(
       schema.object().members({
         id: schema.number(),
         primary_authorization_id: schema.number(),

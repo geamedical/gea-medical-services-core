@@ -118,7 +118,7 @@ export default class FormPermintaanRepository extends BaseRepository {
     }
   }
 
-  async setStatus(req) {
+  async setStatus(req, auth) {
     try {
       const q = await FormPermintaanAkses.query().where('id', req.id).first()
       function findObjectByProperty(array, propertyName, propertyValue) {
@@ -144,7 +144,7 @@ export default class FormPermintaanRepository extends BaseRepository {
               });
               const countSvrOk = arrsrv.filter(obj => obj['status'] === 'y');
               if (arrsrv.length === countSvrOk.length) {
-                return await this.execStatus(req)
+                return await this.execStatus(req, auth)
               } else {
                 return response(400, `Permintaan akses server anda belum semua disetujui, silahkan konfirmasi pada yang bersangkutan!`);
               }
@@ -167,19 +167,19 @@ export default class FormPermintaanRepository extends BaseRepository {
           });
           const filteredObjects = arrSrv.filter(obj => obj['status'] === 'y');
           if (filteredObjects.length === arrSrv.length) {
-            return await this.execStatus(req)
+            return await this.execStatus(req, auth)
           } else {
             return response(400, `Permintaan akses server anda belum semua disetujui, silahkan konfirmasi pada yang bersangkutan!`);
           }
         }
       } else {
-        return await this.execStatus(req)
+        return await this.execStatus(req, auth)
       }
     } catch (error) {
       return responseErrors(error)
     }
   }
-  async execStatus(req) {
+  async execStatus(req, auth) {
     try {
       const q = await FormPermintaanAkses.query().where('id', req.id).first()
       if (q) {
@@ -205,6 +205,7 @@ export default class FormPermintaanRepository extends BaseRepository {
           req['message'] = `INFORMASI PERMINTAAN AKSES: Salah satu permintaan akses telah mendapatkan feedback. Periksa sekarang!`
           Event.emit("notif:permintaan-akses", req);
         }
+        q.user_last_exec = auth.id
         await q.save()
         const cek = await Database
           .from('form_permintaan_akses')
@@ -319,7 +320,7 @@ export default class FormPermintaanRepository extends BaseRepository {
           })
           .first();
         const parents = await GroupFormPermintaanAkses.findOrFail(id)
-        if(parents){
+        if (parents) {
           req.request.forEach(async input => {
             const t1 = await parents.related('child_permintaan').create({
               user_id: find_u!.id,
@@ -371,7 +372,7 @@ export default class FormPermintaanRepository extends BaseRepository {
       return response(500, 'terjadi kesalahan saat menghapus');
     } catch (error) {
       console.log(error);
-      
+
       return responseErrors(error);
     }
   }
@@ -432,7 +433,7 @@ export default class FormPermintaanRepository extends BaseRepository {
       if (del) {
         await del.delete()
       }
-      data['detail']=del
+      data['detail'] = del
     } catch (error) {
       return responseErrors(error);
     } finally {

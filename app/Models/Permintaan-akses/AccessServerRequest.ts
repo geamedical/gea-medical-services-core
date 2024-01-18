@@ -18,12 +18,25 @@ export default class AccessServerRequest extends BaseModel {
   public authorization_id: number;
   @column()
   public status: string;
+  @column()
+  public user_last_exec: number;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
+
+  @belongsTo(() => User, {
+    foreignKey: "user_last_exec",
+    onQuery(query) {
+      if (!query.isRelatedSubQuery) {
+        query
+          .preload('user_lastUpdate_asr')
+      }
+    }
+  })
+  public user_lastupdate: BelongsTo<typeof User>;
 
   @belongsTo(() => User, {
     foreignKey: "user_id",

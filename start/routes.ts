@@ -55,6 +55,10 @@ Route.group(() => {
     Route.resource("nas-permission", "WebApps/Permission/NasDirPermissionsController").apiOnly();
     // PERMISSION::ENDED
 
+    // TOOLS::STARTED
+    Route.resource("fortigate", "WebApps/Tools/FortigatesController").apiOnly();
+    // TOOLS::ENDED
+
     // PERMINTAAN AKSES::STARTED
     Route.resource("form-permintaan", "WebApps/Permintaan-akses/FormReqGasController").apiOnly();
     Route.post("form-permintaan/validate-pin", "WebApps/Permintaan-akses/FormReqGasController.ValidatePin");
@@ -62,5 +66,9 @@ Route.group(() => {
     Route.resource("permintaan-akses-server", "WebApps/Permintaan-akses/AksesServersController").apiOnly();
     Route.resource("permintaan-akses-folder-nas-server", "WebApps/Permintaan-akses/AksesFolderNasServersController").apiOnly();
     // PERMINTAAN AKSES::ENDED
+
+    // DAFTAR PENGGUNAAN EMAIL::STARTED
+    Route.resource("email", "WebApps/FromApi/EmailsController").apiOnly();
+    // DAFTAR PENGGUNAAN EMAIL::ENDED
   }).middleware("auth:api").middleware('throttle:global');
 }).prefix("api");

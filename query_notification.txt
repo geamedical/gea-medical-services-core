@@ -1,0 +1,42 @@
+-- `gea-medical-api-development`.notification source
+
+CREATE OR REPLACE
+ALGORITHM = UNDEFINED VIEW `gea-medical-api-development`.`notification` AS
+SELECT
+    id AS 'identify_id',
+    'access_nas_directory_requests' AS 'tablename',
+    user_id AS 'from',
+    authorization_primary_id AS 'to',
+STATUS AS
+    'status'
+FROM
+    `gea-medical-api-development`.access_nas_directory_requests
+UNION ALL
+SELECT
+    id AS 'identify_id',
+    'access_server_requests' AS 'tablename',
+    user_id AS 'from',
+    authorization_id AS 'to',
+STATUS AS
+    'status'
+FROM
+    `gea-medical-api-development`.`access_server_requests`
+UNION ALL
+SELECT
+    id AS 'identify_id',
+    'form_permintaan_akses' AS 'tablename',
+    user_id AS 'from',
+    accept_primary_id AS 'to',
+    status_primary AS 'status'
+FROM
+    `gea-medical-api-development`.form_permintaan_akses
+    UNION ALL
+SELECT
+    id AS 'identify_id',
+    'form_permintaan_akses' AS 'tablename',
+    user_id AS 'from',
+    accept_secondary_id AS 'to',
+    status_secondary AS 'status'
+FROM
+    `gea-medical-api-development`.form_permintaan_akses
+    ;

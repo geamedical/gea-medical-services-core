@@ -22,7 +22,7 @@ export default class AksesServersController {
     return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async update({ bouncer, response, request }: HttpContextContract) {
+  public async update({ bouncer, response, request, auth }: HttpContextContract) {
     if (await bouncer.allows('read-server')) {
       const q = await this.repository.find('id', request.param('id'))
       const update = {}
@@ -30,6 +30,7 @@ export default class AksesServersController {
       update['server_id'] = q.res.data.server_id
       update['authorization_id'] = q.res.data.authorization_id
       update['status'] = request.input('status')
+      update['user_last_exec'] = auth.user!.id
       await this.repository.update(request.param('id'), update)
       return response.status(200).send(request.all())
     }

@@ -26,6 +26,7 @@ export default class GroupFormPermintaanAkses extends BaseModel {
           .preload('accept_secondary')
           .preload('akses_server')
           .preload('akses_server_nas_folder')
+          .preload('user_lastupdate')
       }
     }
   })

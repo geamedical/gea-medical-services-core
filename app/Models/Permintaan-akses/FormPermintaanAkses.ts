@@ -30,6 +30,8 @@ export default class FormPermintaanAkses extends BaseModel {
   public status_feedback: string
   @column()
   public feedback_message: string
+  @column()
+  public user_last_exec: number
 
   @belongsTo(() => GroupFormPermintaanAkses, {
     foreignKey: 'id',
@@ -38,9 +40,21 @@ export default class FormPermintaanAkses extends BaseModel {
   public parents: BelongsTo<typeof GroupFormPermintaanAkses>
 
   @belongsTo(() => User, {
+    foreignKey: "user_last_exec",
+    onQuery(query) {
+      if (!query.isRelatedSubQuery) {
+        query
+          .preload('user_lastUpdate_fpa')
+      }
+    }
+  })
+  public user_lastupdate: BelongsTo<typeof User>;
+
+  @belongsTo(() => User, {
     foreignKey: 'user_id',
   })
   public user: BelongsTo<typeof User>
+
   @belongsTo(() => User, {
     foreignKey: 'accept_primary_id',
   })

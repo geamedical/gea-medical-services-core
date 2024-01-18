@@ -4,6 +4,8 @@ import { column, beforeSave, BaseModel, belongsTo, BelongsTo, hasMany, HasMany }
 import Role from './Master-data/Role'
 import Dept from './Master-data/Dept'
 import FormPermintaanAkses from './Permintaan-akses/FormPermintaanAkses'
+import AccessServerRequest from './Permintaan-akses/AccessServerRequest'
+import AccessNasDirectoryRequest from './Permintaan-akses/AccessNasDirectoryRequest'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -42,6 +44,8 @@ export default class User extends BaseModel {
   islogin: string
   @column.dateTime({ autoCreate: false, autoUpdate: true })
   last_login: DateTime
+  @column()
+  fortiget_assign: string
   @column({ serializeAs: null })
   public password: string
   @column.dateTime({ autoCreate: true })
@@ -72,4 +76,16 @@ export default class User extends BaseModel {
     foreignKey: 'user_id',
   })
   public formPermintaan: HasMany<typeof FormPermintaanAkses>
+  @hasMany(() => FormPermintaanAkses, {
+    foreignKey: 'user_last_exec',
+  })
+  public user_lastUpdate_fpa: HasMany<typeof FormPermintaanAkses>
+  @hasMany(() => AccessServerRequest, {
+    foreignKey: 'user_last_exec',
+  })
+  public user_lastUpdate_asr: HasMany<typeof AccessServerRequest>
+  @hasMany(() => AccessNasDirectoryRequest, {
+    foreignKey: 'user_last_exec',
+  })
+  public user_lastUpdate_and: HasMany<typeof AccessNasDirectoryRequest>
 }

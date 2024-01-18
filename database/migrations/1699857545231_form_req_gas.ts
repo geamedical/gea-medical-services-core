@@ -23,6 +23,7 @@ export default class extends BaseSchema {
       table.enum('status_primary', ['y','n','w']).defaultTo('w')
       table.enum('status_feedback', ['y','n','w']).defaultTo('w')
       table.string('feedback_message').nullable()
+      table.integer('user_last_exec').unsigned().references('id').inTable('users').onDelete('CASCADE').nullable()
     })
   }
 

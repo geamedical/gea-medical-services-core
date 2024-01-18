@@ -16,6 +16,7 @@ export default class extends BaseSchema {
       table.enum('read', ['y', 'n']).defaultTo('n')
       table.enum('write', ['y', 'n']).defaultTo('n')
       table.enum('status', ['y', 'n', 'w']).defaultTo('w')
+      table.integer('user_last_exec').unsigned().references('id').inTable('users').onDelete('CASCADE').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

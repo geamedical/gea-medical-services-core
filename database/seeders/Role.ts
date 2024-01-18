@@ -1728,10 +1728,16 @@ export default class RoleSeeder extends BaseSeeder {
         coderole: "GLB-ADM-ECOM - ADMIN ECOM"
       },
       {
-        company: 'RMP',
+        company: 'MPM',
         code: 'SOFTWARE-ENGINER',
         rolename: 'Superadmin',
         coderole: 'SOFTWARE-ENGINER-Superadmin',
+      },
+      {
+        company: 'MPM',
+        code: 'MANAGER-IT-INFRA',
+        rolename: 'Manager IT Infra',
+        coderole: 'MANAGER-IT-INFRA-Manager-IT-Infra',
       },
     ]
     await Role.createMany(datarole)

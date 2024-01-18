@@ -21,6 +21,7 @@ export default class extends BaseSchema {
       table.integer('server_id').unsigned().references('id').inTable('server_permissions').onDelete('CASCADE')
       table.integer('authorization_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.enum('status', ['y','n','w']).defaultTo('w')
+      table.integer('user_last_exec').unsigned().references('id').inTable('users').onDelete('CASCADE').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

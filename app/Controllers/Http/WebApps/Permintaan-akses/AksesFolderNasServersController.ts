@@ -24,7 +24,7 @@ export default class AksesFolderNasServersController {
     return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async update({ response, request, bouncer }: HttpContextContract) {
+  public async update({ response, request, bouncer, auth }: HttpContextContract) {
     if (await bouncer.allows('read-nasserver')) {
       const input = request.all()
       const q = await this.repository.find('id', request.param('id'))
@@ -56,6 +56,7 @@ export default class AksesFolderNasServersController {
             update['status'] = input.status === 'approved' ? 'y' : input.status === 'rejected' ? 'n' : 'w'
           }
           update['authorization_secondary_id'] = q.res.data.user_id
+          update['user_last_exec'] = auth.user!.id
           await this.repository.update(request.param('id'), update)
           return response.status(200).send(request.all())
         } else if (cek.status === 'n') {

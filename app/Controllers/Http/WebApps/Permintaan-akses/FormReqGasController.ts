@@ -40,10 +40,10 @@ export default class FormReqGasController {
     return response.unauthorized({ status: false, data: 'function is not allowed!', msg: 'unauthorized' })
   }
 
-  public async update({ bouncer, request, response }: HttpContextContract) {
+  public async update({ bouncer, request, response, auth }: HttpContextContract) {
     const input = request.all()
     if (input['status'] !== undefined && input['column'] !== undefined) {
-      const q = await this.repository.setStatus(request.all())
+      const q = await this.repository.setStatus(request.all(), auth.user)
       return response.status(q.statCode).send(q.res)
     }
     if (await bouncer.allows('update-form-permintaan')) {

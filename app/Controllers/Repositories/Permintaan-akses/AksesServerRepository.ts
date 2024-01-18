@@ -24,6 +24,7 @@ export default class AksesServerRepository extends BaseRepository {
                 .preload('server_detail')
                 .preload('yang_mengajukan')
                 .preload('yang_mengizinkan')
+                .preload('user_lastupdate')
                 .paginate(page, limit < 5 ? count[0].total : limit)
             return response(200, q)
         } catch (error) {

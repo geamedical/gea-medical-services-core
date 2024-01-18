@@ -21,6 +21,7 @@ export default class AksesFolderNasServerRepository extends BaseRepository {
                     }
                 ])
                 .preload('nas_detail')
+                .preload('user_lastupdate')
                 .preload('yang_mengajukan')
                 .preload('yang_mengizinkan_utama')
                 .preload('yang_mengizinkan_pengganti')
