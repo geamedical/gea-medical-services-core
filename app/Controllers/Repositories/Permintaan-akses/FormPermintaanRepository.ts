@@ -181,7 +181,7 @@ export default class FormPermintaanRepository extends BaseRepository {
   }
   async execStatus(req, auth) {
     try {
-      const q = await FormPermintaanAkses.query().where('id', req.id).first()
+      const q = await FormPermintaanAkses.query().where('id', req.id).preload('user').first()
       if (q) {
         if (req.column === 'status_primary') {
           if (req.status === 'n') {
@@ -189,20 +189,20 @@ export default class FormPermintaanRepository extends BaseRepository {
           }
           q.status_primary = req.status
           req['user_target'] = await User.query().where('id', q.user_id)
-          req['message'] = `INFORMASI PERMINTAAN AKSES: Salah satu permintaan akses telah mendapatkan penindakan, mungkin salah satunya adalah pengajuan permintaan akses milik anda. Periksa sekarang!`
+          req['message'] = `INFORMASI PERMINTAAN AKSES: Permintaan akses An. ${q.user.name}-${q.user.nik} telah mendapatkan penindakan persetujuan. Periksa sekarang!`
           Event.emit("notif:permintaan-akses", req);
         }
         if (req.column === 'status_secondary') {
           q.status_secondary = req.status
           req['user_target'] = await User.query().where('id', q.user_id)
-          req['message'] = `INFORMASI PERMINTAAN AKSES: Salah satu permintaan akses telah mendapatkan penindakan, mungkin salah satunya adalah pengajuan permintaan akses milik anda. Periksa sekarang!`
+          req['message'] = `INFORMASI PERMINTAAN AKSES: Permintaan akses An. ${q.user.name}-${q.user.nik} telah mendapatkan penindakan proses. Periksa sekarang!`
           Event.emit("notif:permintaan-akses", req);
         }
         if (req.column === 'status_feedback') {
           q.status_feedback = req.status
           q.feedback_message = req.msg
           req['user_target'] = await User.query().whereIn('id', [q.accept_primary_id, q.accept_secondary_id])
-          req['message'] = `INFORMASI PERMINTAAN AKSES: Salah satu permintaan akses telah mendapatkan feedback. Periksa sekarang!`
+          req['message'] = `INFORMASI PERMINTAAN AKSES: Permintaan akses An. ${q.user.name}-${q.user.nik} telah mendapatkan feedback. Periksa sekarang!`
           Event.emit("notif:permintaan-akses", req);
         }
         q.user_last_exec = auth.id
